@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Container, Card, Button, Row, Col } from "react-bootstrap";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, NavLink } from "react-router-dom";
 import UserContext from "../UserContext";
 import Swal from "sweetalert2";
 
@@ -10,43 +10,98 @@ export default function CourseView() {
 
   const { user } = useContext(UserContext);
 
-  const navigate = useNavigate();
+  const [productData, setProductData] = useState({
+    name: "",
+    description: "",
+    price: 0,
+    quantity: 0,
+  });
 
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
+  const handleAddToCart = async () => {
+    try {
+      if (!user.id) {
+        window.location.href = "/login";
+        return;
+      }
 
-  const enroll = (productId) => {
-    fetch(`http://localhost:4000/users/enroll`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({
-        productId: productId,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data.message);
-
-        if (data.message === "Enrolled Successfully.") {
-          Swal.fire({
-            title: "Successfully enrolled",
-            icon: "success",
-            text: "You have successfully enrolled for this course",
-          });
-
-          navigate("/courses");
-        } else {
-          Swal.fire({
-            title: "Something went wrong",
-            icon: "error",
-            text: "Please try again",
-          });
+      const cartResponse = await fetch(
+        `http://localhost:4000/users/cart/view`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
-      });
+      );
+      const cartData = await cartResponse.json();
+
+      // If the user doesn't have a cart, create one
+      if (!cartData.userCart) {
+        const createCartResponse = await fetch(
+          `http://localhost:4000/users/cart/addToCart`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: JSON.stringify([]),
+          }
+        );
+        const newCartData = await createCartResponse.json();
+        cartData.userCart = newCartData.userCart;
+      }
+
+      let updatedQuantity;
+
+      // Find the product in the user's cart (if it exists)
+      const existingProduct = cartData.userCart.products.find(
+        (product) => product.productId === productId
+      );
+
+      if (existingProduct) {
+        // If the product already exists in the cart, increase its quantity
+        updatedQuantity = existingProduct.quantity + 1;
+      } else {
+        // If the product does not exist in the cart, set initial quantity to 1
+        updatedQuantity = 1;
+      }
+
+      const response = await fetch(
+        `http://localhost:4000/users/cart/addToCart`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify([
+            {
+              productId: productId,
+              quantity: updatedQuantity,
+            },
+          ]),
+        }
+      );
+
+      if (response.ok) {
+        setProductData((prevProductData) => ({
+          ...prevProductData,
+          quantity: updatedQuantity,
+        }));
+        Swal.fire({
+          title: "Added to cart",
+          icon: "success",
+        });
+      } else {
+        console.error("Failed to add to cart");
+        Swal.fire({
+          title: "Failed to add to cart",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
   };
 
   useEffect(() => {
@@ -57,9 +112,7 @@ export default function CourseView() {
       .then((data) => {
         console.log(data);
 
-        setName(data.name);
-        setDescription(data.description);
-        setPrice(data.price);
+        setProductData(data);
       });
   }, [productId]);
 
@@ -69,21 +122,30 @@ export default function CourseView() {
         <Col lg={{ span: 6, offset: 3 }}>
           <Card>
             <Card.Body className="text-center">
-              <Card.Title>{name}</Card.Title>
+              <Card.Title>{productData.name}</Card.Title>
               <Card.Subtitle>Description:</Card.Subtitle>
-              <Card.Text>{description}</Card.Text>
+              <Card.Text>{productData.description}</Card.Text>
               <Card.Subtitle>Price:</Card.Subtitle>
-              <Card.Text>PhP {price}</Card.Text>
+              <Card.Text>PhP {productData.price}</Card.Text>
               <Card.Subtitle>Class Schedule</Card.Subtitle>
               <Card.Text>8 am - 5 pm</Card.Text>
               {user.id !== null ? (
-                <Button variant="primary" onClick={() => enroll(productId)}>
-                  Enroll
-                </Button>
+                <div>
+                  <button
+                    className="product-view-button"
+                    onClick={handleAddToCart}
+                  >
+                    Add to Cart
+                  </button>
+                </div>
               ) : (
-                <Link className="btn btn-danger btn-block" to="/login">
-                  Login to enroll
-                </Link>
+                <Button
+                  className="product-view-button-login"
+                  as={NavLink}
+                  to="/login"
+                >
+                  Login to Add to Cart
+                </Button>
               )}
             </Card.Body>
           </Card>

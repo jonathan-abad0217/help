@@ -10,6 +10,7 @@ import Error from "./pages/Error";
 import Profile from "./pages/Profile";
 import CourseView from "./pages/CourseView";
 import AddCourse from "./pages/AddCourse";
+import CartPage from "./pages/CartPage";
 import { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -74,6 +75,7 @@ function App() {
             <Route path="/courses" element={<Courses />} />
             {/* change the courseId to productId */}
             <Route path="/courses/:productId" element={<CourseView />} />
+            <Route path="/cart" element={<CartPage />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/logout" element={<Logout />} />

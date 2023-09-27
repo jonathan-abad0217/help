@@ -2,7 +2,8 @@ import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { Link, NavLink } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useContext } from "react";
+
 import UserContext from "../UserContext";
 
 export default function AppNavbar() {
@@ -43,6 +44,9 @@ export default function AppNavbar() {
                   </Nav.Link>
                   <Nav.Link as={Link} to="/logout">
                     Logout
+                  </Nav.Link>
+                  <Nav.Link as={NavLink} to="/cart" className="mr-2">
+                    Cart
                   </Nav.Link>
                 </>
               )
