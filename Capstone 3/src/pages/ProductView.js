@@ -4,7 +4,7 @@ import { useParams, NavLink } from "react-router-dom";
 import UserContext from "../UserContext";
 import Swal from "sweetalert2";
 
-export default function CourseView() {
+export default function ProductView() {
   //change from courseId to productId
   const { productId } = useParams();
 

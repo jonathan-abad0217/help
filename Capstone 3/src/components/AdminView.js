@@ -1,40 +1,37 @@
 import { useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
-import EditCourse from "./EditCourse";
-import ArchiveCourse from "./ArchiveCourse";
+import EditProduct from "./EditProduct";
+import ArchiveProduct from "./ArchiveProduct";
 
-export default function AdminView({ coursesData, fetchData }) {
-  // b. Add state to store all courses
-  const [courses, setCourses] = useState([]);
+export default function AdminView({ productsData, fetchData }) {
+  // b. Add state to store all products
+  const [products, setProducts] = useState([]);
 
-  //Getting the coursesData from the courses page
+  //Getting the productsData from the products page
   useEffect(() => {
-    const coursesArr = coursesData.map((course) => {
-      return (
-        <tr key={course._id}>
-          <td>{course._id}</td>
-          <td>{course.name}</td>
-          <td>{course.description}</td>
-          <td>{course.price}</td>
-          <td className={course.isActive ? "text-success" : "text-danger"}>
-            {course.isActive ? "Available" : "Unavailable"}
-          </td>
-          <td>
-            <EditCourse product={course._id} fetchData={fetchData} />
-          </td>
-          <td>
-            <ArchiveCourse
-              product={course._id}
-              isActive={course.isActive}
-              fetchData={fetchData}
-            />
-          </td>
-        </tr>
-      );
-    });
-
-    setCourses(coursesArr);
-  }, [coursesData]);
+    setProducts(productsData);
+  }, [productsData]);
+  const productData = products.map((product) => (
+    <tr key={product._id}>
+      <td>{product._id}</td>
+      <td>{product.name}</td>
+      <td>{product.description}</td>
+      <td>{product.price}</td>
+      <td className={product.isActive ? "text-success" : "text-danger"}>
+        {product.isActive ? "Available" : "Unavailable"}
+      </td>
+      <td>
+        <EditProduct product={product._id} fetchData={fetchData} />
+      </td>
+      <td>
+        <ArchiveProduct
+          product={product._id}
+          isActive={product.isActive}
+          fetchData={fetchData}
+        />
+      </td>
+    </tr>
+  ));
 
   return (
     <>
@@ -52,7 +49,7 @@ export default function AdminView({ coursesData, fetchData }) {
           </tr>
         </thead>
 
-        <tbody>{courses}</tbody>
+        <tbody>{productData}</tbody>
       </Table>
     </>
   );

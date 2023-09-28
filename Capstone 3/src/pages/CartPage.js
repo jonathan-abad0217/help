@@ -150,19 +150,6 @@ function CartPage() {
                   <Col md={3} className="col3">
                     <div className="product-details">
                       <div className="input-remove-container">
-                        {/* <div className="quantity-input">
-                          <input
-                            type="number"
-                            value={product.quantity}
-                            onChange={(e) =>
-                              handleUpdateQuantity(
-                                product.productId,
-                                e.target.value
-                              )
-                            }
-                            className="short-input"
-                          />
-                        </div> */}
                         <div className="quantity-input">
                           <button
                             className=" quantity-button-minus btn btn-secondary text-center"

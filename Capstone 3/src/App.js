@@ -2,14 +2,14 @@ import "./App.css";
 import { UserProvider } from "./UserContext";
 import AppNavbar from "./components/AppNavbar";
 import Home from "./pages/Home";
-import Courses from "./pages/Courses";
+import Products from "./pages/Products";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 import Error from "./pages/Error";
 import Profile from "./pages/Profile";
-import CourseView from "./pages/CourseView";
-import AddCourse from "./pages/AddCourse";
+import ProductView from "./pages/ProductView";
+import AddProduct from "./pages/AddProduct";
 import CartPage from "./pages/CartPage";
 import { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
@@ -63,7 +63,7 @@ function App() {
           });
         }
       });
-  }, []);
+  }, [user]);
 
   return (
     <UserProvider value={{ user, setUser, unsetUser }}>
@@ -72,15 +72,15 @@ function App() {
           <AppNavbar />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/courses" element={<Courses />} />
+            <Route path="/products" element={<Products />} />
             {/* change the courseId to productId */}
-            <Route path="/courses/:productId" element={<CourseView />} />
+            <Route path="/products/:productId" element={<ProductView />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/addcourse" element={<AddCourse />} />
+            <Route path="/addProduct" element={<AddProduct />} />
             <Route path="*" element={<Error />} />
           </Routes>
         </Container>

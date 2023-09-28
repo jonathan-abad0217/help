@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 
-export default function ArchiveCourse({ product, isActive, fetchData }) {
+export default function ArchiveProduct({ product, isActive, fetchData }) {
   const archiveToggle = (productId) => {
     fetch(`http://localhost:4000/products/${productId}/archive`, {
       method: "PUT",

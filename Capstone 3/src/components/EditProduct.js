@@ -91,7 +91,7 @@ export default function EditCourse({ product, fetchData }) {
             <Modal.Title>Edit Product</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form.Group controlId="courseName">
+            <Form.Group controlId="productName">
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
@@ -100,7 +100,7 @@ export default function EditCourse({ product, fetchData }) {
                 required
               />
             </Form.Group>
-            <Form.Group controlId="courseDescription">
+            <Form.Group controlId="productDescription">
               <Form.Label>Description</Form.Label>
               <Form.Control
                 type="text"
@@ -109,7 +109,7 @@ export default function EditCourse({ product, fetchData }) {
                 required
               />
             </Form.Group>
-            <Form.Group controlId="coursePrice">
+            <Form.Group controlId="productPrice">
               <Form.Label>Price</Form.Label>
               <Form.Control
                 type="number"

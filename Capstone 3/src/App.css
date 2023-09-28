@@ -7,3 +7,24 @@
 .cardHighlight {
   min-height: 100%;
 }
+
+.custom-container {
+  display: flex;
+  align-items: center;
+}
+.custom-input-name {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 250px;
+}
+.custom-input-price {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.custom-input-group {
+  display: flex;
+  align-items: center;
+}

@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Row, Dropdown } from "react-bootstrap";
-import CourseCard from "./CourseCard";
+import ProductCard from "./ProductCard";
 // import CourseSearch from "./CourseSearch";
 // import CourseSearchByPrice from "./CourseSearchByPrice";
 
-export default function UserView({ coursesData }) {
-  const [courses, setCourses] = useState([]);
+export default function UserView({ productsData }) {
+  const [products, setProducts] = useState([]);
 
   //   useEffect(() => {
-  //     const coursesArr = coursesData.map((course) => {
-  //       //only render the active courses
-  //       if (course.isActive === true) {
-  //         return <CourseCard courseProp={course} key={course._id} />;
+  //     const productsArr = productsData.map((product) => {
+  //       //only render the active products
+  //       if (product.isActive === true) {
+  //         return <ProductCard productProp={product} key={product._id} />;
   //       } else {
   //         return null;
   //       }
   //     });
 
-  //     //set the courses state to the result of our map function, to bring our returned course component outside of the scope of our useEffect where our return statement below can see.
-  //     setCourses(coursesArr);
-  //   }, [coursesData]);
+  //     //set the products state to the result of our map function, to bring our returned product component outside of the scope of our useEffect where our return statement below can see.
+  //     setProducts(productsArr);
+  //   }, [productsData]);
 
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -30,29 +30,29 @@ export default function UserView({ coursesData }) {
   const [sortCriteria, setSortCriteria] = useState("name");
   const [sortDirection, setSortDirection] = useState("asc");
 
-  const activeProducts = filteredProducts.filter((course) => course.isActive);
-  const courseCards = activeProducts.map((course) => (
-    <CourseCard key={course._id} courseProp={course} />
+  const activeProducts = filteredProducts.filter((product) => product.isActive);
+  const productCards = activeProducts.map((product) => (
+    <ProductCard key={product._id} productProp={product} />
   ));
 
   useEffect(() => {
-    setCourses(coursesData);
-    setFilteredProducts(coursesData);
-  }, [coursesData]);
+    setProducts(productsData);
+    setFilteredProducts(productsData);
+  }, [productsData]);
 
   useEffect(() => {
-    const filteredByName = courses.filter((course) =>
-      course.name.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredByName = products.filter((product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const filteredByPrice = courses.filter(
-      (course) =>
-        (minPrice === "" || course.price >= minPrice) &&
-        (maxPrice === "" || course.price <= maxPrice)
+    const filteredByPrice = products.filter(
+      (product) =>
+        (minPrice === "" || product.price >= minPrice) &&
+        (maxPrice === "" || product.price <= maxPrice)
     );
 
-    const combinedFiltered = filteredByName.filter((course) =>
-      filteredByPrice.includes(course)
+    const combinedFiltered = filteredByName.filter((product) =>
+      filteredByPrice.includes(product)
     );
 
     const sortedProducts = combinedFiltered.sort((a, b) => {
@@ -67,7 +67,7 @@ export default function UserView({ coursesData }) {
     });
 
     setFilteredProducts(sortedProducts);
-  }, [searchTerm, minPrice, maxPrice, courses, sortCriteria, sortDirection]);
+  }, [searchTerm, minPrice, maxPrice, products, sortCriteria, sortDirection]);
 
   const handleSortChange = (criteria) => {
     if (criteria === sortCriteria) {
@@ -87,7 +87,7 @@ export default function UserView({ coursesData }) {
         <div className="custom-container">
           <Dropdown onSelect={handleSortChange} className="mr-2">
             <Dropdown.Toggle
-              variant="secondary"
+              variant="primary"
               id="sort-dropdown"
               className="dropdown"
             >
@@ -109,7 +109,7 @@ export default function UserView({ coursesData }) {
 
           <Dropdown onSelect={handleDropdownSelect} className="mr-2">
             <Dropdown.Toggle
-              variant="secondary"
+              variant="primary"
               id="dropdown-basic"
               className="dropdown"
             >
@@ -155,7 +155,7 @@ export default function UserView({ coursesData }) {
         </div>
       </div>
 
-      <Row className="mb-5 mt-2">{courseCards}</Row>
+      <Row className="mb-5 mt-2">{productCards}</Row>
     </>
   );
 }

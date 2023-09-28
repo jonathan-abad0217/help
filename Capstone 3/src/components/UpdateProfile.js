@@ -12,17 +12,14 @@ function UpdateProfile({ onUpdate }) {
 
     const token = localStorage.getItem("token");
 
-    const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/users/profile`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ firstName, lastName, mobileNo }),
-      }
-    );
+    const response = await fetch(`http://localhost:4000/users/profile`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ firstName, lastName, mobileNo }),
+    });
 
     if (response) {
       onUpdate();
@@ -73,4 +70,4 @@ function UpdateProfile({ onUpdate }) {
   );
 }
 
-export default UpdateProfile
+export default UpdateProfile;
